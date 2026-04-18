@@ -18,6 +18,9 @@ connectDB(); // Connect to MongoDB
 // Allow multiple origins (local development and production)
 const allowedOrigins = [
   'http://localhost:3000',
+  'https://mlfolio-obipxis84-angeloromaraog.vercel.app',
+  'https://mlfolio-six.vercel.app',
+  'https://mlfolio.vercel.app',
   process.env.FRONTEND_URL
 ].filter(Boolean);
 
