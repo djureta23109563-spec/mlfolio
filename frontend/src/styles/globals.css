@@ -1,0 +1,177 @@
+/* Mobile Legends Theme - Blue & Yellow Color Scheme */
+:root {
+  /* Light Mode Colors */
+  --primary-blue: #0a4da4;
+  --primary-dark: #062c5e;
+  --primary-light: #1e6ad4;
+  --accent-yellow: #ffd700;
+  --accent-orange: #ff8c00;
+  --accent-gold: #ffc107;
+  --text-primary: #2c3e50;
+  --text-secondary: #7f8c8d;
+  --text-light: #ffffff;
+  --bg-primary: #ffffff;
+  --bg-secondary: #f5f7fa;
+  --bg-card: #ffffff;
+  --border-color: #e1e8ed;
+  --shadow: 0 2px 8px rgba(0,0,0,0.1);
+  --shadow-hover: 0 4px 12px rgba(0,0,0,0.15);
+  --border-radius: 12px;
+  --transition: all 0.3s ease;
+}
+
+/* Dark Mode Colors */
+[data-theme="dark"] {
+  --primary-blue: #3b82f6;
+  --primary-dark: #1e40af;
+  --primary-light: #60a5fa;
+  --accent-yellow: #fbbf24;
+  --accent-orange: #f97316;
+  --accent-gold: #f59e0b;
+  --text-primary: #f3f4f6;
+  --text-secondary: #9ca3af;
+  --text-light: #ffffff;
+  --bg-primary: #111827;
+  --bg-secondary: #1f2937;
+  --bg-card: #374151;
+  --border-color: #4b5563;
+  --shadow: 0 2px 8px rgba(0,0,0,0.3);
+  --shadow-hover: 0 4px 12px rgba(0,0,0,0.4);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  line-height: 1.6;
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-secondary);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--accent-yellow);
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--accent-orange);
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+/* Loading Animation */
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+.loading {
+  animation: pulse 1.5s ease-in-out infinite;
+  text-align: center;
+  padding: 40px;
+  font-size: 1.2rem;
+  color: var(--accent-yellow);
+}
+
+/* Error Message */
+.error-msg {
+  background: #dc2626;
+  color: white;
+  padding: 10px 15px;
+  border-radius: 8px;
+  margin: 10px 0;
+  text-align: center;
+}
+
+/* Success Message */
+.success-msg {
+  background: #10b981;
+  color: white;
+  padding: 10px 15px;
+  border-radius: 8px;
+  margin: 10px 0;
+  text-align: center;
+}
+
+/* Buttons */
+.btn {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: var(--transition);
+  font-weight: 600;
+}
+
+.btn-primary {
+  background: var(--primary-blue);
+  color: white;
+}
+
+.btn-primary:hover {
+  background: var(--primary-dark);
+  transform: translateY(-2px);
+}
+
+.btn-secondary {
+  background: var(--accent-yellow);
+  color: var(--primary-dark);
+}
+
+.btn-secondary:hover {
+  background: var(--accent-orange);
+  transform: translateY(-2px);
+}
+
+.btn-danger {
+  background: #dc2626;
+  color: white;
+}
+
+.btn-danger:hover {
+  background: #b91c1c;
+}
+
+/* Form Styles */
+input, textarea, select {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  background: var(--bg-card);
+  color: var(--text-primary);
+  font-size: 1rem;
+  transition: var(--transition);
+}
+
+input:focus, textarea:focus, select:focus {
+  outline: none;
+  border-color: var(--accent-yellow);
+  box-shadow: 0 0 0 3px rgba(255, 215, 0, 0.1);
+}
+
+label {
+  font-weight: 600;
+  margin-bottom: 5px;
+  display: block;
+  color: var(--text-primary);
+}
