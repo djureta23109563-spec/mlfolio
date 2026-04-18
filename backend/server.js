@@ -14,30 +14,9 @@ const adminRoutes = require('./routes/admin.routes');
 const app = express();
 connectDB(); // Connect to MongoDB
 
-// Middleware
-// Allow multiple origins (local development and production)
-const allowedOrigins = [
-  'http://localhost:3000',
-  'https://mlfolio-6tojmre3o-angeloromaraog.vercel.app',
-  'https://mlfolio-obipxis84-angeloromaraog.vercel.app',
-  'https://mlfolio-six.vercel.app',
-  'https://mlfolio.vercel.app',
-  'https://gamefolio-frontend.vercel.app',
-  process.env.FRONTEND_URL
-].filter(Boolean);
-
-// CORS configuration
+// CORS configuration - Allow all origins (temporary fix for deployment)
 app.use(cors({
-  origin: function(origin, callback) {
-    // Allow requests with no origin (like mobile apps, curl, etc)
-    if (!origin) return callback(null, true);
-    if (allowedOrigins.indexOf(origin) !== -1) {
-      return callback(null, true);
-    }
-    console.log('Blocked origin:', origin);
-    const msg = 'The CORS policy for this site does not allow access from the specified Origin.';
-    return callback(new Error(msg), false);
-  },
+  origin: true,  // This allows ANY origin to access your API
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization']
@@ -47,7 +26,6 @@ app.use(cors({
 app.use(express.json());
 
 // Serve uploaded image files as public URLs
-// e.g. https://your-backend.onrender.com/uploads/my-image.jpg
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // Routes
@@ -70,5 +48,5 @@ app.get('/', (req, res) => {
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
-  console.log(`CORS enabled for: ${allowedOrigins.join(', ')}`);
+  console.log(`CORS enabled for: ALL ORIGINS (development mode)`);
 });
