@@ -18,23 +18,29 @@ connectDB(); // Connect to MongoDB
 // Allow multiple origins (local development and production)
 const allowedOrigins = [
   'http://localhost:3000',
+  'https://mlfolio-6tojmre3o-angeloromaraog.vercel.app',
   'https://mlfolio-obipxis84-angeloromaraog.vercel.app',
   'https://mlfolio-six.vercel.app',
   'https://mlfolio.vercel.app',
+  'https://gamefolio-frontend.vercel.app',
   process.env.FRONTEND_URL
 ].filter(Boolean);
 
+// CORS configuration
 app.use(cors({
   origin: function(origin, callback) {
     // Allow requests with no origin (like mobile apps, curl, etc)
     if (!origin) return callback(null, true);
-    if (allowedOrigins.indexOf(origin) === -1) {
-      const msg = 'The CORS policy for this site does not allow access from the specified Origin.';
-      return callback(new Error(msg), false);
+    if (allowedOrigins.indexOf(origin) !== -1) {
+      return callback(null, true);
     }
-    return callback(null, true);
+    console.log('Blocked origin:', origin);
+    const msg = 'The CORS policy for this site does not allow access from the specified Origin.';
+    return callback(new Error(msg), false);
   },
   credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
 }));
 
 // Parse incoming JSON request bodies
@@ -53,6 +59,11 @@ app.use('/api/admin', adminRoutes);
 // Health check endpoint for Render
 app.get('/health', (req, res) => {
   res.status(200).json({ status: 'OK', message: 'Server is running' });
+});
+
+// Root endpoint
+app.get('/', (req, res) => {
+  res.status(200).json({ message: 'MLFolio API is running' });
 });
 
 // Start Server
