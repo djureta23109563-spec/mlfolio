@@ -10,9 +10,11 @@ const HomePage = () => {
   const [loading, setLoading] = useState(true);
   const [selectedCategory, setSelectedCategory] = useState('all');
 
-  // Helper function to get image URL
+  // Helper function to get image URL - UPDATED with production URL
   const getImageUrl = (filename) => {
-    const baseUrl = process.env.REACT_APP_API_URL?.replace('/api', '') || 'http://localhost:5000';
+    if (!filename) return null;
+    // Use environment variable or fallback to production Render URL
+    const baseUrl = process.env.REACT_APP_API_URL?.replace('/api', '') || 'https://mlfolio.onrender.com';
     return `${baseUrl}/uploads/${filename}`;
   };
 
@@ -106,6 +108,10 @@ const HomePage = () => {
                         src={getImageUrl(post.image)} 
                         alt={post.title}
                         className={styles.featuredImage}
+                        onError={(e) => {
+                          console.error('Image failed to load:', getImageUrl(post.image));
+                          e.target.style.display = 'none';
+                        }}
                       />
                       <div className={styles.featuredOverlay}></div>
                     </div>
@@ -123,6 +129,7 @@ const HomePage = () => {
                             src={getImageUrl(post.author.profilePic)}
                             alt={post.author.name}
                             className={styles.authorAvatar}
+                            onError={(e) => { e.target.style.display = 'none'; }}
                           />
                         ) : (
                           <div className={styles.authorAvatarPlaceholder}>
@@ -190,6 +197,10 @@ const HomePage = () => {
                           src={getImageUrl(post.image)} 
                           alt={post.title}
                           className={styles.postImage}
+                          onError={(e) => {
+                            console.error('Image failed to load:', getImageUrl(post.image));
+                            e.target.style.display = 'none';
+                          }}
                         />
                         <div className={styles.postImageOverlay}>
                           <span>Read Story →</span>
@@ -226,6 +237,7 @@ const HomePage = () => {
                             src={getImageUrl(post.author.profilePic)}
                             alt={post.author.name}
                             className={styles.authorAvatar}
+                            onError={(e) => { e.target.style.display = 'none'; }}
                           />
                         ) : (
                           <div className={styles.authorAvatarPlaceholder}>
