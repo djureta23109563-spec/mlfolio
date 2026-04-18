@@ -1,4 +1,4 @@
-// frontend/src/pages/ProfilePage.js
+// frontend/src/pages/ProfilePage.jsx
 import { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import API from '../api/axios';
@@ -14,6 +14,12 @@ const ProfilePage = () => {
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+
+  // Helper function to get image URL
+  const getImageUrl = (filename) => {
+    const baseUrl = process.env.REACT_APP_API_URL?.replace('/api', '') || 'http://localhost:5000';
+    return `${baseUrl}/uploads/${filename}`;
+  };
 
   const handleProfileUpdate = async (e) => {
     e.preventDefault();
@@ -60,7 +66,7 @@ const ProfilePage = () => {
   };
 
   const profilePicUrl = user?.profilePic
-    ? `http://localhost:5000/uploads/${user.profilePic}`
+    ? getImageUrl(user.profilePic)
     : '/default-avatar.png';
 
   return (

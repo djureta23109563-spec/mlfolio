@@ -1,8 +1,14 @@
+// frontend/src/api/axios.jsx
 import axios from 'axios';
-import { API_URL } from '../config';
+
+// Use environment variable for API URL, fallback to localhost for development
+const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000/api';
 
 const instance = axios.create({
   baseURL: API_URL,
+  headers: {
+    'Content-Type': 'application/json',
+  },
 });
 
 instance.interceptors.request.use(

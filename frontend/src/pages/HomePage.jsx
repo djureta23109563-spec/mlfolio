@@ -10,6 +10,12 @@ const HomePage = () => {
   const [loading, setLoading] = useState(true);
   const [selectedCategory, setSelectedCategory] = useState('all');
 
+  // Helper function to get image URL
+  const getImageUrl = (filename) => {
+    const baseUrl = process.env.REACT_APP_API_URL?.replace('/api', '') || 'http://localhost:5000';
+    return `${baseUrl}/uploads/${filename}`;
+  };
+
   useEffect(() => {
     fetchPosts();
   }, []);
@@ -18,7 +24,6 @@ const HomePage = () => {
     try {
       const res = await API.get('/posts');
       setPosts(res.data);
-      // Get first 3 posts as featured
       setFeaturedPosts(res.data.slice(0, 3));
     } catch (err) {
       console.error('Error fetching posts:', err);
@@ -63,7 +68,6 @@ const HomePage = () => {
 
   return (
     <div className={styles.homePage}>
-      {/* Hero Section */}
       <div className={styles.hero}>
         <div className={styles.heroContent}>
           <h1 className={styles.heroTitle}>
@@ -85,7 +89,6 @@ const HomePage = () => {
         </div>
       </div>
 
-      {/* Featured Posts Section */}
       {featuredPosts.length > 0 && (
         <section className={styles.featuredSection}>
           <div className={styles.container}>
@@ -100,7 +103,7 @@ const HomePage = () => {
                   {post.image && (
                     <div className={styles.featuredImageWrapper}>
                       <img 
-                        src={`http://localhost:5000/uploads/${post.image}`} 
+                        src={getImageUrl(post.image)} 
                         alt={post.title}
                         className={styles.featuredImage}
                       />
@@ -117,7 +120,7 @@ const HomePage = () => {
                       <div className={styles.postAuthor}>
                         {post.author?.profilePic ? (
                           <img 
-                            src={`http://localhost:5000/uploads/${post.author.profilePic}`}
+                            src={getImageUrl(post.author.profilePic)}
                             alt={post.author.name}
                             className={styles.authorAvatar}
                           />
@@ -138,7 +141,6 @@ const HomePage = () => {
         </section>
       )}
 
-      {/* Category Filter */}
       <section className={styles.categorySection}>
         <div className={styles.container}>
           <div className={styles.categoryWrapper}>
@@ -160,7 +162,6 @@ const HomePage = () => {
         </div>
       </section>
 
-      {/* Posts Grid */}
       <section className={styles.postsSection}>
         <div className={styles.container}>
           <h2 className={styles.sectionTitle}>
@@ -186,7 +187,7 @@ const HomePage = () => {
                     <Link to={`/posts/${post._id}`} className={styles.postImageLink}>
                       <div className={styles.postImageWrapper}>
                         <img 
-                          src={`http://localhost:5000/uploads/${post.image}`} 
+                          src={getImageUrl(post.image)} 
                           alt={post.title}
                           className={styles.postImage}
                         />
@@ -222,7 +223,7 @@ const HomePage = () => {
                       <div className={styles.postAuthor}>
                         {post.author?.profilePic ? (
                           <img 
-                            src={`http://localhost:5000/uploads/${post.author.profilePic}`}
+                            src={getImageUrl(post.author.profilePic)}
                             alt={post.author.name}
                             className={styles.authorAvatar}
                           />

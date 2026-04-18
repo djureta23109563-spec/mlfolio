@@ -8,7 +8,7 @@ import styles from '../styles/EditPostPage.module.css';
 const EditPostPage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { user } = useAuth(); // user IS used for permission check below
+  const { user } = useAuth();
   const [title, setTitle] = useState('');
   const [body, setBody] = useState('');
   const [image, setImage] = useState(null);
@@ -18,11 +18,16 @@ const EditPostPage = () => {
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
 
+  // Helper function to get image URL
+  const getImageUrl = (filename) => {
+    const baseUrl = process.env.REACT_APP_API_URL?.replace('/api', '') || 'http://localhost:5000';
+    return `${baseUrl}/uploads/${filename}`;
+  };
+
   const fetchPost = useCallback(async () => {
     try {
       const { data } = await API.get(`/posts/${id}`);
       
-      // Check if user is author or admin - user IS used here
       if (data.author?._id !== user?._id && user?.role !== 'admin') {
         navigate('/home');
         return;
@@ -45,12 +50,10 @@ const EditPostPage = () => {
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
-      // Check file size (max 5MB)
       if (file.size > 5 * 1024 * 1024) {
         setError('Image size must be less than 5MB');
         return;
       }
-      // Check file type
       if (!file.type.startsWith('image/')) {
         setError('Please upload an image file');
         return;
@@ -67,7 +70,6 @@ const EditPostPage = () => {
   const handleRemoveImage = () => {
     setImage(null);
     setImagePreview('');
-    // Optional: You can also add a flag to delete the current image
   };
 
   const handleSubmit = async (e) => {
@@ -120,16 +122,14 @@ const EditPostPage = () => {
           />
         </div>
 
-        {/* Allow ALL users to update images */}
         <div className={styles.formGroup}>
           <label>Cover Image (Optional)</label>
           
-          {/* Show current image if exists and no new image selected */}
           {currentImage && !image && !imagePreview && (
             <div className={styles.currentImage}>
               <p>Current image:</p>
               <img 
-                src={`http://localhost:5000/uploads/${currentImage}`}
+                src={getImageUrl(currentImage)}
                 alt="Current"
                 className={styles.currentImagePreview}
               />

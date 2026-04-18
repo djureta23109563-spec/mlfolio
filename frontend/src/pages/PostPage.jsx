@@ -15,6 +15,12 @@ const PostPage = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
+  // Helper function to get image URL
+  const getImageUrl = (filename) => {
+    const baseUrl = process.env.REACT_APP_API_URL?.replace('/api', '') || 'http://localhost:5000';
+    return `${baseUrl}/uploads/${filename}`;
+  };
+
   const fetchPost = useCallback(async () => {
     try {
       const res = await API.get(`/posts/${id}`);
@@ -87,7 +93,7 @@ const PostPage = () => {
         <article className={styles.post}>
           {post.image && (
             <img 
-              src={`http://localhost:5000/uploads/${post.image}`}
+              src={getImageUrl(post.image)}
               alt={post.title}
               className={styles.postImage}
             />
@@ -99,7 +105,7 @@ const PostPage = () => {
             <div className={styles.postAuthor}>
               {post.author?.profilePic ? (
                 <img 
-                  src={`http://localhost:5000/uploads/${post.author.profilePic}`}
+                  src={getImageUrl(post.author.profilePic)}
                   alt={post.author.name}
                   className={styles.authorAvatar}
                 />
@@ -166,7 +172,7 @@ const PostPage = () => {
                     <div className={styles.commentAuthor}>
                       {comment.author?.profilePic ? (
                         <img 
-                          src={`http://localhost:5000/uploads/${comment.author.profilePic}`}
+                          src={getImageUrl(comment.author.profilePic)}
                           alt={comment.author.name}
                           className={styles.commentAvatar}
                         />

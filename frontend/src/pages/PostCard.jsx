@@ -8,12 +8,18 @@ const PostCard = ({ post }) => {
     return text.substring(0, maxLength) + '...';
   };
 
+  // Helper function to get image URL
+  const getImageUrl = (filename) => {
+    const baseUrl = process.env.REACT_APP_API_URL?.replace('/api', '') || 'http://localhost:5000';
+    return `${baseUrl}/uploads/${filename}`;
+  };
+
   return (
     <Link to={`/posts/${post._id}`} className={styles.postCard}>
       {post.image && (
         <div className={styles.imageContainer}>
           <img 
-            src={`http://localhost:5000/uploads/${post.image}`} 
+            src={getImageUrl(post.image)} 
             alt={post.title}
             className={styles.postImage}
           />
@@ -31,7 +37,7 @@ const PostCard = ({ post }) => {
           <div className={styles.postAuthor}>
             {post.author?.profilePic ? (
               <img 
-                src={`http://localhost:5000/uploads/${post.author.profilePic}`}
+                src={getImageUrl(post.author.profilePic)}
                 alt={post.author.name}
                 className={styles.authorAvatar}
               />
