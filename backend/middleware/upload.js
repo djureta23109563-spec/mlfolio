@@ -4,18 +4,24 @@ const path = require('path');
 const fs = require('fs');
 
 // Create uploads/ folder if it does not exist yet
-if (!fs.existsSync('uploads')) {
-  fs.mkdirSync('uploads');
+const uploadsDir = path.join(__dirname, '../uploads');
+if (!fs.existsSync(uploadsDir)) {
+  fs.mkdirSync(uploadsDir, { recursive: true });
+  console.log('Created uploads directory at:', uploadsDir);
 }
 
 // Where and how to save uploaded files
 const storage = multer.diskStorage({
-  destination: (req, file, cb) => cb(null, 'uploads'),
+  destination: (req, file, cb) => {
+    console.log('Saving file to:', uploadsDir);
+    cb(null, uploadsDir);
+  },
   filename: (req, file, cb) => {
     // Create a unique filename: timestamp + random number + original extension
     const unique = Date.now() + '-' + Math.round(Math.random() * 1e9);
-    cb(null, unique + path.extname(file.originalname));
-    // Example result: 1719123456789-342156789.jpg
+    const filename = unique + path.extname(file.originalname);
+    console.log('Generated filename:', filename);
+    cb(null, filename);
   }
 });
 
@@ -24,7 +30,18 @@ const fileFilter = (req, file, cb) => {
   const allowedTypes = /jpeg|jpg|png|gif|webp/;
   const ext = allowedTypes.test(path.extname(file.originalname).toLowerCase());
   const mime = allowedTypes.test(file.mimetype);
-  if (ext && mime) return cb(null, true);
+  
+  console.log('File upload check:', {
+    originalName: file.originalname,
+    mimetype: file.mimetype,
+    ext: path.extname(file.originalname),
+    extValid: ext,
+    mimeValid: mime
+  });
+  
+  if (ext && mime) {
+    return cb(null, true);
+  }
   cb(new Error('Only image files are allowed (jpg, png, gif, webp)'));
 };
 
